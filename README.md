@@ -33,5 +33,19 @@ foreach ($timeRange1->getDays(2, TimeRange::BACKWARD) as $datetime) {
 foreach ($timeRange1->getMinutes() as $datetime) {
   echo $datetime->format('Y-m-d')."<br>";
 }
+```
 
+### Check if two TimeRanges overlap
+```php
+$timeRange1 = new TimeRange('2013-03-31 00:00', '2013-04-01 01:09');
+$timeRange2 = new TimeRange('2013-01-01 12:30', '2013-01-05 14:00');
+
+if ($timeRange1->overlaps($timeRange2)) {
+  echo "Ranges overlap";
+}
+
+// Check if date overlaps the TimeRange
+if ($timeRange1->overlaps("2013-04-01", TimeRange::DAY)) {
+  ...
+}
 ```
