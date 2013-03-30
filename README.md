@@ -49,3 +49,10 @@ if ($timeRange1->overlaps("2013-04-01", TimeRange::DAY)) {
   ...
 }
 ```
+
+### Changing range start and end
+```php
+$timeRange = new TimeRange('2013-03-31 00:00', '2013-04-01 01:09');
+$timeRange->setStart('2013-02-28');
+$timeRange->setEnd('2013-03-03');
+```
