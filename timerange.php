@@ -4,13 +4,11 @@
  *
  * @package     TimeRange
  * @author      Joonas Järnstedt
- * @version 	0.1
+ * @version 	0.2
  *
  */
 class TimeRange implements Iterator {
 	
-	private $defaultFormat = 'Y-m-d H:i:s';
-
 	private $start;
 	private $end;
 
@@ -25,8 +23,8 @@ class TimeRange implements Iterator {
 	const MONTH = 4;
 	const YEAR = 5;
 
-	const FORWARD = 1;
 	const BACKWARD = 0;
+	const FORWARD = 1;
 
 	/**
 	 * Create TimeRange from DateTime objects or time strings.
@@ -36,6 +34,11 @@ class TimeRange implements Iterator {
 		$this->position = 0;
 
 		try {
+
+			if (is_null($start) or is_null($end)) {
+				throw new InvalidArgumentException('Invalid DateTime.');
+			}
+
 			if (!is_object($start)) {
 				// Create datetime from string
 				$start = new Datetime($start);
@@ -64,7 +67,7 @@ class TimeRange implements Iterator {
 	}
 
 	/**
-	 * Change start datetime.
+	 * Change start datetime. Returns true if successful.
 	 */
 	public function setStart($start) {
 		try {
@@ -84,13 +87,14 @@ class TimeRange implements Iterator {
 		}
 
 		if ($this->start > $this->end) {
-			throw new InvalidArgumentException(
-				'Invalid TimeRange. The starting time must be before the ending time.');
+			// 'Invalid TimeRange. The starting time must be before the ending time.
+			return false;
 		}
+		return true;
 	}
 
 	/**
-	 * Change end datetime.
+	 * Change end datetime. Returns true if successful.
 	 */
 	public function setEnd($end) {
 		try {
@@ -110,9 +114,10 @@ class TimeRange implements Iterator {
 		}
 
 		if ($this->start > $this->end) {
-			throw new InvalidArgumentException(
-				'Invalid TimeRange. The starting time must be before the ending time.');
+			// Invalid TimeRange. The starting time must be before the ending time.
+			return false;
 		}
+		return true;
 	}
 
 	/**
