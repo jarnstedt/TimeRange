@@ -29,9 +29,9 @@ foreach ($timeRange1->getDays(2, TimeRange::BACKWARD) as $datetime) {
   echo $datetime->format('Y-m-d')."<br>";
 }
 
-// Echo all hours
+// Echo all minutes
 foreach ($timeRange1->getMinutes() as $datetime) {
-  echo $datetime->format('Y-m-d')."<br>";
+  echo $datetime->format('Y-m-d H:i')."<br>";
 }
 ```
 
