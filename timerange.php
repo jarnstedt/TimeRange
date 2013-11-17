@@ -126,6 +126,8 @@ class TimeRange implements Iterator
 
     /**
      * Returns true if the two given time ranges overlap.
+     * @param mixed $timeRange as object or string
+     * @param const $precision SECOND/MINUTE/HOUR/DAY/MONTH/YEAR
      * @return bool
      */
     public function overlaps($timeRange, $precision = null)
@@ -182,6 +184,12 @@ class TimeRange implements Iterator
 
     }
 
+    /**
+     * Get array of minutes.
+     * @param int $interval 
+     * @param FORWARD/BACKWARD $direction 
+     * @return DateTime array
+     */
     public function getMinutes($interval = 1, $direction = self::FORWARD)
     {
 
@@ -211,6 +219,12 @@ class TimeRange implements Iterator
         return $this->dates;
     }
 
+    /**
+     * Get array of hours in the range.
+     * @param int $interval 
+     * @param FORWARD/BACKWARD $direction 
+     * @return DateTime array
+     */
     public function getHours($interval = 1, $direction = self::FORWARD)
     {
 
@@ -243,7 +257,7 @@ class TimeRange implements Iterator
     /**
      * Get array of days in the range.
      * @param int $interval 
-     * @param int $direction 
+     * @param FORWARD/BACKWARD $direction 
      * @return DateTime array
      */
     public function getDays($interval = 1, $direction = self::FORWARD)
@@ -312,22 +326,49 @@ class TimeRange implements Iterator
     }
 
     /**
-     * Iteration functions
+     * Get the start date of timerange.
+     * @return \DateTime
      */
-    function rewind() {
+    public function getStart()
+    {
+        return $this->start;
+    }
+
+    /**
+     * Get the end date of timerange.
+     * @return \DateTime
+     */
+    public function getEnd()
+    {
+        return $this->end;
+    }
+
+    /**
+     * Iteration functions.
+     */
+    public function rewind()
+    {
         $this->getDays();
         $this->position = 0;
     }
-    function current() {
+    
+    public function current()
+    {
         return $this->dates[$this->position];
     }
-    function key() {
+
+    public function key()
+    {
         return $this->position;
     }
-    function next() {
+    
+    public function next()
+    {
         return ++$this->position;
     }
-    function valid() {
+
+    public function valid()
+    {
         return isset($this->dates[$this->position]);
     }
 }
