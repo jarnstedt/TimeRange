@@ -4,7 +4,7 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * Try creating NULL timerange
+     * Try creating NULL timerange.
      * @expectedException InvalidArgumentException
      */
     public function testCreateNull()
@@ -33,7 +33,6 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
 
     /**
      * Create TimeRange from datetime strings.
-     * @return type
      */
     public function testCreateFromString()
     {
@@ -122,7 +121,7 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getMonths() function
+     * Test getMonths() function.
      */
     public function testGetMonths()
     {
@@ -153,7 +152,7 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getHours() function
+     * Test getHours() function.
      */
     public function testGetHours()
     {
@@ -184,7 +183,7 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getMinutes() function
+     * Test getMinutes() function.
      */
     public function testGetMinutes()
     {
@@ -263,6 +262,9 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
 
     }
 
+    /**
+     * Test start date setter.
+     */
     public function testSetStart()
     {
         $timerange = new TimeRange('2013-01-01 00:00:00', '2013-01-01 23:30:30');
@@ -271,11 +273,51 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
         $this->assertFalse($timerange->setStart('2013-01-01 23:59:59'));
     }
 
+    /**
+     * Test end date setter.
+     */
     public function testSetEnd()
     {
         $timerange = new TimeRange('2013-01-01 00:00:00', '2013-01-01 23:30:30');
 
         $this->assertTrue($timerange->setEnd('2013-01-01 23:00:00'));
         $this->assertFalse($timerange->setEnd('2012-12-31 23:59:59'));
+    }
+
+    /**
+     * Test that the php iterator works.
+     */
+    public function testIterator()
+    {
+        $timerange = new TimeRange('2013-01-01', '2013-01-05');
+        $count = 0;
+
+        // This should loop all days
+        foreach ($timerange as $key => $date) {
+            $this->assertEquals($key, $count, 'Invalid iterator key.');
+            $count++;
+        }
+
+        $this->assertEquals($count, 5, 'Iterating days failed.');
+    }
+
+    /**
+     * Test start date getter function getStart().
+     */
+    public function testGetStart()
+    {
+        $start = new DateTime('2013-01-01 12:30:59');
+        $timerange = new TimeRange($start, '2013-01-05');
+        $this->assertEquals($timerange->getStart(), $start);
+    }
+
+    /**
+     * Test end date getter function getEnd().
+     */
+    public function testGetEnd()
+    {
+        $end = new DateTime('2013-01-01 12:30:59');
+        $timerange = new TimeRange('2013-01-01 00:00:00', $end);
+        $this->assertEquals($timerange->getEnd(), $end);
     }
 }
