@@ -222,12 +222,12 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
         $timerange2 = new TimeRange('2013-01-01 23:30:31', '2013-01-01 23:59:30');
         $timerange3 = new TimeRange('2013-01-01', '2014-01-01 23:59:30');
 
-        $this->assertEquals(false, $timerange1->overlaps($timerange2), TimeRange::YEAR);
-        $this->assertEquals(true, $timerange1->overlaps($timerange3), TimeRange::YEAR);
-        $this->assertEquals(true, $timerange1->overlaps($timerange3), TimeRange::MONTH);
-        $this->assertEquals(true, $timerange1->overlaps($timerange3), TimeRange::DAY);
-        $this->assertEquals(true, $timerange1->overlaps($timerange3), TimeRange::HOUR);
-        $this->assertEquals(true, $timerange1->overlaps($timerange3), TimeRange::MINUTE);
+        $this->assertEquals(false, $timerange1->overlaps($timerange2, TimeRange::YEAR));
+        $this->assertEquals(true, $timerange1->overlaps($timerange3, TimeRange::YEAR));
+        $this->assertEquals(true, $timerange1->overlaps($timerange3, TimeRange::MONTH));
+        $this->assertEquals(true, $timerange1->overlaps($timerange3, TimeRange::DAY));
+        $this->assertEquals(true, $timerange1->overlaps($timerange3, TimeRange::HOUR));
+        $this->assertEquals(true, $timerange1->overlaps($timerange3, TimeRange::MINUTE));
         $this->assertEquals(true, $timerange1->overlaps($timerange3));
     }
 
