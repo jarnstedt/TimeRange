@@ -56,3 +56,9 @@ $timeRange = new TimeRange('2013-03-31 00:00', '2013-04-01 01:09');
 $timeRange->setStart('2013-02-28');
 $timeRange->setEnd('2013-03-03');
 ```
+
+## Running unit tests
+Download phpunit from http://phpunit.de/ and in project directory run:
+```
+php phpunit.phar
+```
