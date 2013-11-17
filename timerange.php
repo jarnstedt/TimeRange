@@ -7,7 +7,7 @@
  * @version     0.3
  *
  */
-class TimeRange implements Iterator
+class TimeRange implements \Iterator
 {
     
     private $start;
@@ -38,32 +38,32 @@ class TimeRange implements Iterator
         try {
 
             if (is_null($start) or is_null($end)) {
-                throw new InvalidArgumentException('Invalid DateTime.');
+                throw new \InvalidArgumentException('Invalid DateTime.');
             }
 
             if (!is_object($start)) {
                 // Create datetime from string
-                $start = new Datetime($start);
+                $start = new \Datetime($start);
             }
 
             if (!is_object($end)) {
                 // Create datetime from string
-                $end = new Datetime($end);
+                $end = new \Datetime($end);
             }
 
-            if ($start instanceof DateTime and $end instanceof DateTime) {
+            if ($start instanceof \DateTime and $end instanceof \DateTime) {
                 $this->start = clone $start;
                 $this->end = clone $end;
             } else {
-                throw new InvalidArgumentException('Invalid DateTime.');
+                throw new \InvalidArgumentException('Invalid DateTime.');
             }
 
-        } catch (Exception $e) {
-            throw new InvalidArgumentException('Invalid DateTime.');
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException('Invalid DateTime.');
         }
 
         if ($this->start > $this->end) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 'Invalid TimeRange. The starting time must be before the ending time.');
         }
     }
@@ -76,17 +76,17 @@ class TimeRange implements Iterator
         try {
             if (!is_object($start)) {
                 // Create datetime from string
-                $start = new Datetime($start);
+                $start = new \Datetime($start);
             }
 
-            if ($start instanceof DateTime) {
+            if ($start instanceof \DateTime) {
                 $this->start = clone $start;
             } else {
-                throw new InvalidArgumentException('Invalid DateTime.');
+                throw new \InvalidArgumentException('Invalid DateTime.');
             }
 
-        } catch (Exception $e) {
-            throw new InvalidArgumentException('Invalid DateTime.');
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException('Invalid DateTime.');
         }
 
         if ($this->start > $this->end) {
@@ -104,17 +104,17 @@ class TimeRange implements Iterator
         try {
             if (!is_object($end)) {
                 // Create datetime from string
-                $end = new Datetime($end);
+                $end = new \Datetime($end);
             }
 
-            if ($end instanceof DateTime) {
+            if ($end instanceof \DateTime) {
                 $this->end = clone $end;
             } else {
-                throw new InvalidArgumentException('Invalid DateTime.');
+                throw new \InvalidArgumentException('Invalid DateTime.');
             }
 
-        } catch (Exception $e) {
-            throw new InvalidArgumentException('Invalid DateTime.');
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException('Invalid DateTime.');
         }
 
         if ($this->start > $this->end) {
@@ -135,40 +135,36 @@ class TimeRange implements Iterator
 
         switch ($precision) {
             case self::YEAR:
-            $format = 'Y';
-            break;
+                $format = 'Y';
+                break;
             case self::MONTH:
-            $format = 'Ym';
-            break;
+                $format = 'Ym';
+                break;
             case self::DAY:
-            $format = 'Ymd';
-            break;
+                $format = 'Ymd';
+                break;
             case self::HOUR:
-            $format = 'YmdH';
-            break;
+                $format = 'YmdH';
+                break;
             case self::MINUTE:
-            $format = 'YmdHi';
-            break;
+                $format = 'YmdHi';
+                break;
             default:
-            // Compare precision is seconds (default)
-            $format = 'YmdHis';
+                // Compare precision is seconds (default)
+                $format = 'YmdHis';
         }
 
         try {
-            if (is_object($timeRange)) {
-                if ($timeRange instanceof TimeRange) {
-                    
-                    if ($this->start->format($format) <= $timeRange->end->format($format) and
-                        $timeRange->start->format($format) <= $this->end->format($format))
-                    {
-                        return true;
-                    } else {
-                        return false;
-                    }
+            if ($timeRange instanceof TimeRange) {
+                if ($this->start->format($format) <= $timeRange->end->format($format) and
+                    $timeRange->start->format($format) <= $this->end->format($format))
+                {
+                    return true;
                 }
-            } else {
-                $timeRange = new DateTime($timeRange);
+                return false;
             }
+
+            $timeRange = new \DateTime($timeRange);
 
             if ($this->start->format($format) <= $timeRange->format($format) and
                 $this->end->format($format) >= $timeRange->format($format))
@@ -178,10 +174,9 @@ class TimeRange implements Iterator
                 return false;
             }
 
-        } catch (Exception $e) {
-            throw new InvalidArgumentException('Invalid TimeRange: ' . $e);
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException('Invalid TimeRange: ' . $e);
         }
-
     }
 
     /**
