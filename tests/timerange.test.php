@@ -135,6 +135,19 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test getDays() function with a long time range.
+     */
+    public function testGetDaysMany()
+    {
+        $timerange = new TimeRange('2012-01-01 00:00:00', '2012-12-31 23:59:59');
+        $days = $timerange->getDays();
+        $days2 = $timerange->getDays(1, TimeRange::BACKWARD);
+        // 2012 is leap year --> 366 days
+        $this->assertEquals(366, count($days));
+        $this->assertEquals(366, count($days2));
+    }
+
+    /**
      * Test getMonths() function.
      */
     public function testGetMonths()
