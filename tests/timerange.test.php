@@ -1,15 +1,26 @@
 <?php
+namespace Ikirouta;
 
-class TestTimeRange extends PHPUnit_Framework_TestCase
+use \Ikirouta\TimeRange;
+use \DateTime;
+
+/**
+ * Tests for TimeRange class.
+ * 
+ * @package TimeRange
+ * @author  Joonas Järnstedt <joonas@xnetti.net>
+ */
+class TestTimeRange extends \PHPUnit_Framework_TestCase
 {
 
     /**
      * Try creating NULL timerange.
+     * 
      * @expectedException InvalidArgumentException
      */
     public function testCreateNull()
     {
-        $timerange = new TimeRange('2000-01-01', NULL);
+        $timerange = new TimeRange('2000-01-01', null);
     }
 
     /**
@@ -28,7 +39,7 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
         $timeRange2 = new TimeRange($start2, $end2);
         $timeRange3 = new TimeRange($start3, $end3);
 
-        $this->assertInstanceOf('TimeRange', $timeRange1);
+        $this->assertInstanceOf('Ikirouta\TimeRange', $timeRange1);
     }
 
     /**
@@ -39,12 +50,12 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
         $timeRange1 = new TimeRange('2013-01-01', '2013-01-01');
         $timeRange2 = new TimeRange('1900-01-01', '2020-01-01');
         $timeRange3 = new TimeRange('2013-03-20 01:02:30', '2013-12-31 23:59:59');
-
-        $this->assertInstanceOf('TimeRange', $timeRange1);
+        $this->assertInstanceOf('Ikirouta\TimeRange', $timeRange1);
     }
 
     /**
      * Try creating invalid TimeRange from DateTime objects.
+     * 
      * @expectedException InvalidArgumentException
      */
     public function testInvalidCreateFromDateTime1()
@@ -59,6 +70,7 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
 
     /**
      * Try creating invalid TimeRange from DateTime objects.
+     * 
      * @expectedException InvalidArgumentException
      */
     public function testInvalidCreateFromDateTime2()
@@ -70,6 +82,7 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
 
     /**
      * Try creating invalid TimeRange from DateTime objects.
+     * 
      * @expectedException InvalidArgumentException
      */
     public function testInvalidCreateFromDateTime3()
@@ -81,6 +94,7 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
 
     /**
      * Try creating invalid TimeRanges from datetime strings.
+     * 
      * @expectedException InvalidArgumentException
      */
     public function testInvalidCreateFromString1()
@@ -274,6 +288,7 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
 
     /**
      * Test overlaps() function with an invalid parameter.
+     * 
      * @expectedException InvalidArgumentException
      */
     public function testOverlapWithInvalidParameter()
@@ -284,6 +299,7 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
 
     /**
      * Test start date setter.
+     * 
      * @expectedException InvalidArgumentException
      */
     public function testSetStart()
@@ -297,6 +313,7 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
 
     /**
      * Test end date setter.
+     * 
      * @expectedException InvalidArgumentException
      */
     public function testSetEnd()

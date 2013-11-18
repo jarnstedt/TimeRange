@@ -1,10 +1,12 @@
 <?php
+namespace Ikirouta;
+
 /**
  * Compare and loop time ranges.
  *
- * @package     TimeRange
- * @author      Joonas Järnstedt
- * @version     0.4
+ * @package TimeRange
+ * @author  Joonas Järnstedt <joonas@xnetti.net>
+ * @version Release: 0.4
  *
  */
 class TimeRange implements \Iterator
@@ -29,8 +31,9 @@ class TimeRange implements \Iterator
 
     /**
      * Create TimeRange from DateTime objects or time strings.
+     * 
      * @param mixed $start DateTime object or datetime string
-     * @param mixed $end DateTime object or datetime string
+     * @param mixed $end   DateTime object or datetime string
      */
     public function __construct($start, $end)
     {
@@ -59,14 +62,16 @@ class TimeRange implements \Iterator
 
         if ($this->start > $this->end) {
             throw new \InvalidArgumentException(
-                'Invalid TimeRange. The starting time must be before the ending time.'
+                'TimeRange: The starting time must be before the ending time.'
             );
         }
     }
 
     /**
      * Change start datetime. Returns true if successful.
+     * 
      * @param mixed $start DateTime object or datetime string
+     * 
      * @return bool
      */
     public function setStart($start)
@@ -89,7 +94,7 @@ class TimeRange implements \Iterator
 
         if ($this->start > $this->end) {
             throw new \InvalidArgumentException(
-                'Invalid TimeRange. The starting time must be before the ending time.'
+                'TimeRange: The starting time must be before the ending time.'
             );
         }
         return true;
@@ -97,7 +102,9 @@ class TimeRange implements \Iterator
 
     /**
      * Change end datetime. Returns true if successful.
+     * 
      * @param mixed $end DateTime object or datetime string
+     * 
      * @return bool
      */
     public function setEnd($end)
@@ -120,7 +127,7 @@ class TimeRange implements \Iterator
 
         if ($this->start > $this->end) {
             throw new \InvalidArgumentException(
-                'Invalid TimeRange. The starting time must be before the ending time.'
+                'TimeRange: The starting time must be before the ending time.'
             );
         }
         return true;
@@ -128,8 +135,10 @@ class TimeRange implements \Iterator
 
     /**
      * Returns true if the two given time ranges overlap.
-     * @param mixed $timeRange as object or string
-     * @param const $precision SECOND/MINUTE/HOUR/DAY/MONTH/YEAR
+     * 
+     * @param TimeRange|string $timeRange as object or string
+     * @param int              $precision SECOND/MINUTE/HOUR/DAY/MONTH/YEAR
+     * 
      * @return bool
      */
     public function overlaps($timeRange, $precision = null)
@@ -158,9 +167,11 @@ class TimeRange implements \Iterator
 
         try {
             if ($timeRange instanceof TimeRange) {
-                if ($this->start->format($format) <= $timeRange->end->format($format) and
-                    $timeRange->start->format($format) <= $this->end->format($format))
-                {
+                $startStr = $this->start->format($format);
+                $endStr = $this->end->format($format);
+
+                if ($startStr <= $timeRange->end->format($format) and
+                    $timeRange->start->format($format) <= $endStr) {
                     return true;
                 }
                 return false;
@@ -171,8 +182,7 @@ class TimeRange implements \Iterator
             }
 
             if ($this->start->format($format) <= $date->format($format) and
-                $this->end->format($format) >= $date->format($format))
-            {
+                $this->end->format($format) >= $date->format($format)) {
                 return true;
             } else {
                 return false;
@@ -185,8 +195,10 @@ class TimeRange implements \Iterator
 
     /**
      * Get array of minutes.
-     * @param int $interval 
-     * @param FORWARD/BACKWARD $direction 
+     * 
+     * @param int $interval  Loop interval in minutes
+     * @param 0|1 $direction FORWARD/BACKWARD
+     * 
      * @return array DateTime objects array
      */
     public function getMinutes($interval = 1, $direction = self::FORWARD)
@@ -196,7 +208,9 @@ class TimeRange implements \Iterator
 
         if ($direction == self::FORWARD) {
             $iterator = clone $this->start;
-            $iterator->setTime($this->start->format('H'), $this->start->format('i'), 0);
+            $hours = $this->start->format('H');
+            $minutes = $this->start->format('i');
+            $iterator->setTime($hours, $minutes, 0);
 
             while ($iterator <= $this->end) {
 
@@ -208,9 +222,17 @@ class TimeRange implements \Iterator
             $iterator = clone $this->end;
             
             while ($iterator >= $this->start) {
-                $iterator->setTime($iterator->format('H'), $iterator->format('i'), 0);
+                $iterator->setTime(
+                    $iterator->format('H'),
+                    $iterator->format('i'),
+                    0
+                );
                 $this->dates[] = clone $iterator;
-                $iterator->setTime($iterator->format('H'), $iterator->format('i'), 59);
+                $iterator->setTime(
+                    $iterator->format('H'),
+                    $iterator->format('i'),
+                    59
+                );
                 $iterator->modify("-$interval minute");
             }
         }
@@ -220,8 +242,10 @@ class TimeRange implements \Iterator
 
     /**
      * Get array of hours in the range.
-     * @param int $interval 
-     * @param FORWARD/BACKWARD $direction 
+     * 
+     * @param int $interval  Loop interval in minutes
+     * @param 0|1 $direction FORWARD/BACKWARD
+     * 
      * @return array DateTime objects array
      */
     public function getHours($interval = 1, $direction = self::FORWARD)
@@ -255,8 +279,10 @@ class TimeRange implements \Iterator
 
     /**
      * Get array of days in the range.
-     * @param int $interval 
-     * @param FORWARD/BACKWARD $direction 
+     * 
+     * @param int $interval  Loop interval in days
+     * @param 0|1 $direction FORWARD/BACKWARD
+     * 
      * @return array DateTime objects array
      */
     public function getDays($interval = 1, $direction = self::FORWARD)
@@ -290,8 +316,10 @@ class TimeRange implements \Iterator
 
     /**
      * Get array of months in the range.
-     * @param int $interval 
-     * @param FORWARD/BACKWARD $direction 
+     * 
+     * @param int $interval  Loop interval in months
+     * @param 0|1 $direction FORWARD/BACKWARD
+     * 
      * @return array DateTime objects array
      */
     public function getMonths($interval = 1, $direction = self::FORWARD)
@@ -302,7 +330,9 @@ class TimeRange implements \Iterator
         if ($direction == self::FORWARD) {
             $iterator = clone $this->start;
             $iterator->setTime(0, 0, 0);
-            $iterator->setDate($this->start->format('Y'), $this->start->format('m'), 1);
+            $year = $this->start->format('Y');
+            $month = $this->start->format('m');
+            $iterator->setDate($year, $month, 1);
 
             while ($iterator <= $this->end) {
 
@@ -326,6 +356,7 @@ class TimeRange implements \Iterator
 
     /**
      * Get the start date of timerange.
+     * 
      * @return \DateTime
      */
     public function getStart()
@@ -335,6 +366,7 @@ class TimeRange implements \Iterator
 
     /**
      * Get the end date of timerange.
+     * 
      * @return \DateTime
      */
     public function getEnd()
@@ -343,7 +375,9 @@ class TimeRange implements \Iterator
     }
 
     /**
-     * Iteration functions.
+     * Iteration function rewind.
+     * 
+     * @return void
      */
     public function rewind()
     {
@@ -351,21 +385,41 @@ class TimeRange implements \Iterator
         $this->position = 0;
     }
     
+    /**
+     * Iteration function current.
+     * 
+     * @return \DateTime
+     */
     public function current()
     {
         return $this->dates[$this->position];
     }
 
+    /**
+     * Iteration function key.
+     * 
+     * @return int
+     */
     public function key()
     {
         return $this->position;
     }
     
+    /**
+     * Iteration function next key.
+     * 
+     * @return int
+     */
     public function next()
     {
         return ++$this->position;
     }
 
+    /**
+     * Iteration function validate key.
+     * 
+     * @return bool
+     */
     public function valid()
     {
         return isset($this->dates[$this->position]);
