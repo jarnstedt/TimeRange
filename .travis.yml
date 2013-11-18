@@ -12,8 +12,8 @@ php:
   - 5.5
 
 before_script:
-  - pyrus install pear/PHP_CodeSniffer
-  - phpenv rehash
+  - sh -c "if [ '$TRAVIS_PHP_VERSION' != '5.2' ]; then pyrus install http://phptal.org/latest.tar.gz && pear install pear/PHP_CodeSniffer && phpenv rehash; fi"
 
-script: phpunit --configuration phpunit.xml --coverage-text
-
+script:
+  - phpunit --configuration phpunit.xml --coverage-text
+  - sh -c "if [ '$TRAVIS_PHP_VERSION' = '5.5' ]; then phpcs --standard=psr1 --encoding=UTF-8 --report=summary -p; fi"
