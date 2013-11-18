@@ -3,6 +3,8 @@ TimeRange <a href="https://travis-ci.org/ikirouta/TimeRange" target="_blank"><im
 
 Compare and loop time ranges in PHP.
 
+Requires PHP 5.3+.
+
 ## Examples
 
 ### Creating a TimeRange object
