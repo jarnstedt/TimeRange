@@ -1,4 +1,4 @@
-TimeRange
+TimeRange <a href="https://travis-ci.org/ikirouta/TimeRange" target="_blank"><img src="https://travis-ci.org/ikirouta/TimeRange.png" /></a>
 =========
 
 Compare and loop time ranges in PHP.
