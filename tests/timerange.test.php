@@ -259,29 +259,32 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, $timerange->overlaps('2013-01-01 23:30:59', TimeRange::MINUTE));
         $this->assertEquals(true, $timerange->overlaps('2013-01-01 23:59:59', TimeRange::HOUR));
         $this->assertEquals(true, $timerange->overlaps('2013-01-01', TimeRange::DAY));
-
     }
 
     /**
      * Test start date setter.
+     * @expectedException InvalidArgumentException
      */
     public function testSetStart()
     {
         $timerange = new TimeRange('2013-01-01 00:00:00', '2013-01-01 23:30:30');
 
         $this->assertTrue($timerange->setStart('2013-01-01 12:00:00'));
-        $this->assertFalse($timerange->setStart('2013-01-01 23:59:59'));
+        // Should throw an exception
+        $timerange->setStart('2013-01-01 23:59:59');
     }
 
     /**
      * Test end date setter.
+     * @expectedException InvalidArgumentException
      */
     public function testSetEnd()
     {
         $timerange = new TimeRange('2013-01-01 00:00:00', '2013-01-01 23:30:30');
 
         $this->assertTrue($timerange->setEnd('2013-01-01 23:00:00'));
-        $this->assertFalse($timerange->setEnd('2012-12-31 23:59:59'));
+        // Should throw an exception
+        $timerange->setEnd('2012-12-31 23:59:59');
     }
 
     /**
