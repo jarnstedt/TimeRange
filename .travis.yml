@@ -34,9 +34,9 @@ before_script:
 
 script:
   - phpunit --configuration phpunit.xml --coverage-text
-  - phpcs -l --standard=psr2 --report=full -v . tests
+  # - phpcs -l --standard=psr2 --report=full -v . tests
   # - ./vendor/bin/phpmd . text codesize,unusedcode,naming,phpmd.xml
-  # - sh -c "if [ '$TRAVIS_PHP_VERSION' = '5.5' ]; then phpcs --standard=psr1; fi"
+  - sh -c "if [ '$TRAVIS_PHP_VERSION' = '5.5' ]; then phpcs -l --standard=psr2 --report=full -v . tests; fi"
 
 notifications:
   email: false
