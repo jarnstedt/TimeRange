@@ -1,6 +1,10 @@
 <?php
 namespace Ikirouta;
 
+use \InvalidArgumentException;
+use \DateTime;
+use \Exception;
+
 /**
  * Compare and loop time ranges.
  *
@@ -40,28 +44,28 @@ class TimeRange implements \Iterator
         try {
 
             if ($start === null or $end === null) {
-                throw new \InvalidArgumentException('Invalid DateTime.');
+                throw new InvalidArgumentException('Invalid DateTime.');
             }
 
-            if (!$start instanceof \DateTime) {
+            if (!$start instanceof DateTime) {
                 // Create datetime from string
-                $start = new \Datetime($start);
+                $start = new Datetime($start);
             }
 
-            if (!$end instanceof \DateTime) {
+            if (!$end instanceof DateTime) {
                 // Create datetime from string
-                $end = new \Datetime($end);
+                $end = new Datetime($end);
             }
 
             $this->start = clone $start;
             $this->end = clone $end;
 
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException('Invalid DateTime: ' . $e);
+        } catch (Exception $e) {
+            throw new InvalidArgumentException('Invalid DateTime: ' . $e);
         }
 
         if ($this->start > $this->end) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'TimeRange: The starting time must be before the ending time.'
             );
         }
@@ -79,21 +83,21 @@ class TimeRange implements \Iterator
         try {
             if (!is_object($start)) {
                 // Create datetime from string
-                $start = new \Datetime($start);
+                $start = new Datetime($start);
             }
 
-            if ($start instanceof \DateTime) {
+            if ($start instanceof DateTime) {
                 $this->start = clone $start;
             } else {
-                throw new \InvalidArgumentException('Invalid DateTime.');
+                throw new InvalidArgumentException('Invalid DateTime.');
             }
 
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException('Invalid DateTime.');
+        } catch (Exception $e) {
+            throw new InvalidArgumentException('Invalid DateTime.');
         }
 
         if ($this->start > $this->end) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'TimeRange: The starting time must be before the ending time.'
             );
         }
@@ -112,21 +116,21 @@ class TimeRange implements \Iterator
         try {
             if (!is_object($end)) {
                 // Create datetime from string
-                $end = new \Datetime($end);
+                $end = new Datetime($end);
             }
 
-            if ($end instanceof \DateTime) {
+            if ($end instanceof DateTime) {
                 $this->end = clone $end;
             } else {
-                throw new \InvalidArgumentException('Invalid DateTime.');
+                throw new InvalidArgumentException('Invalid DateTime.');
             }
 
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException('Invalid DateTime.');
+        } catch (Exception $e) {
+            throw new InvalidArgumentException('Invalid DateTime.');
         }
 
         if ($this->start > $this->end) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'TimeRange: The starting time must be before the ending time.'
             );
         }
@@ -175,10 +179,10 @@ class TimeRange implements \Iterator
                     return true;
                 }
                 return false;
-            } elseif ($timeRange instanceof \DateTime) {
+            } elseif ($timeRange instanceof DateTime) {
                 $date = $timeRange;
             } else {
-                $date = new \DateTime($timeRange);
+                $date = new DateTime($timeRange);
             }
 
             if ($this->start->format($format) <= $date->format($format) and
@@ -188,8 +192,8 @@ class TimeRange implements \Iterator
                 return false;
             }
 
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException('Invalid TimeRange: ' . $e);
+        } catch (Exception $e) {
+            throw new InvalidArgumentException('Invalid TimeRange: ' . $e);
         }
     }
 
