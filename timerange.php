@@ -294,29 +294,21 @@ class TimeRange implements \Iterator
 
         $this->dates = array();
 
-        if ($direction == self::FORWARD) {
-            $int = new \DateInterval("P{$interval}D");
+        $int = new \DateInterval("P{$interval}D");
 
-            $start = clone $this->start;
-            $start->setTime(0, 0, 0);
-            $end = clone $this->end;
-            // We use this to get the last day
-            $end->setTime(12, 0, 0);
-            $daterange = new \DatePeriod($start, $int, $end);
+        $start = clone $this->start;
+        $start->setTime(0, 0, 0);
+        $end = clone $this->end;
+        // We use this to get the last day
+        $end->setTime(12, 0, 0);
+        $daterange = new \DatePeriod($start, $int, $end);
 
-            foreach ($daterange as $date) {
-                $this->dates[] = $date;
-            }
+        foreach ($daterange as $date) {
+            $this->dates[] = $date;
+        }
 
-        } else {
-            $iterator = clone $this->end;
-            
-            while ($iterator >= $this->start) {
-                $iterator->setTime(0, 0, 0);
-                $this->dates[] = clone $iterator;
-                $iterator->setTime(23, 59, 59);
-                $iterator->modify("-$interval day");
-            }
+        if ($direction == self::BACKWARD) {
+            return array_reverse($this->dates);
         }
 
         return $this->dates;

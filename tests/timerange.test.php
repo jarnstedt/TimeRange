@@ -144,6 +144,10 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
         $days2 = $timerange->getDays(1, TimeRange::BACKWARD);
         // 2012 is leap year --> 366 days
         $this->assertEquals(366, count($days));
+        foreach ($days as $day) {
+            $time = $day->format('H:i:s');
+            $this->assertEquals('00:00:00', $time);
+        }
         $this->assertEquals(366, count($days2));
     }
 
