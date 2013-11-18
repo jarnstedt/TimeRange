@@ -262,6 +262,27 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test overlaps() function with DateTime parameter
+     */
+    public function testOverlapWithDateTimeParameter()
+    {
+        $timerange = new TimeRange('2013-01-01 00:00:00', '2013-01-01 23:30:30');
+        $datetime = new DateTime('2013-01-01 23:30:31');
+        $this->assertFalse($timerange->overlaps($datetime));
+        $this->assertTrue($timerange->overlaps($datetime, TimeRange::MINUTE));
+    }
+
+    /**
+     * Test overlaps() function with an invalid parameter.
+     * @expectedException InvalidArgumentException
+     */
+    public function testOverlapWithInvalidParameter()
+    {
+        $timerange = new TimeRange('2013-01-01 00:00:00', '2013-01-01 23:30:30');
+        $timerange->overlaps('your argument is invalid');
+    }
+
+    /**
      * Test start date setter.
      * @expectedException InvalidArgumentException
      */

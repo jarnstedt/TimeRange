@@ -54,7 +54,7 @@ class TimeRange implements \Iterator
             $this->end = clone $end;
 
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException('Invalid DateTime.');
+            throw new \InvalidArgumentException('Invalid DateTime: ' . $e);
         }
 
         if ($this->start > $this->end) {
@@ -164,12 +164,14 @@ class TimeRange implements \Iterator
                     return true;
                 }
                 return false;
+            } elseif ($timeRange instanceof \DateTime) {
+                $date = $timeRange;
+            } else {
+                $date = new \DateTime($timeRange);
             }
 
-            $timeRange = new \DateTime($timeRange);
-
-            if ($this->start->format($format) <= $timeRange->format($format) and
-                $this->end->format($format) >= $timeRange->format($format))
+            if ($this->start->format($format) <= $date->format($format) and
+                $this->end->format($format) >= $date->format($format))
             {
                 return true;
             } else {
