@@ -26,7 +26,7 @@ php:
 before_script:
   - pear install PHP_CodeSniffer
   - phpenv rehash
-  - ./composer.phar install --dev --prefer-source --no-interaction
+  # - ./composer.phar install --dev --prefer-source --no-interaction
   # - pear channel-discover pear.cakephp.org
   # - pear install --alldeps cakephp/CakePHP_CodeSniffer
   # - phpenv rehash
