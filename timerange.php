@@ -4,14 +4,14 @@
  *
  * @package     TimeRange
  * @author      Joonas Järnstedt
- * @version     0.3
+ * @version     0.4
  *
  */
 class TimeRange implements \Iterator
 {
     
-    private $start;
-    private $end;
+    protected $start;
+    protected $end;
 
     // Iterator
     private $position = 0;
@@ -29,34 +29,29 @@ class TimeRange implements \Iterator
 
     /**
      * Create TimeRange from DateTime objects or time strings.
+     * @param mixed $start DateTime object or datetime string
+     * @param mixed $end DateTime object or datetime string
      */
     public function __construct($start, $end)
     {
-
-        $this->position = 0;
-
         try {
 
-            if (is_null($start) or is_null($end)) {
+            if ($start === null or $end === null) {
                 throw new \InvalidArgumentException('Invalid DateTime.');
             }
 
-            if (!is_object($start)) {
+            if (!$start instanceof \DateTime) {
                 // Create datetime from string
                 $start = new \Datetime($start);
             }
 
-            if (!is_object($end)) {
+            if (!$end instanceof \DateTime) {
                 // Create datetime from string
                 $end = new \Datetime($end);
             }
 
-            if ($start instanceof \DateTime and $end instanceof \DateTime) {
-                $this->start = clone $start;
-                $this->end = clone $end;
-            } else {
-                throw new \InvalidArgumentException('Invalid DateTime.');
-            }
+            $this->start = clone $start;
+            $this->end = clone $end;
 
         } catch (\Exception $e) {
             throw new \InvalidArgumentException('Invalid DateTime.');
@@ -64,12 +59,15 @@ class TimeRange implements \Iterator
 
         if ($this->start > $this->end) {
             throw new \InvalidArgumentException(
-                'Invalid TimeRange. The starting time must be before the ending time.');
+                'Invalid TimeRange. The starting time must be before the ending time.'
+            );
         }
     }
 
     /**
      * Change start datetime. Returns true if successful.
+     * @param mixed $start DateTime object or datetime string
+     * @return bool
      */
     public function setStart($start)
     {
@@ -90,14 +88,17 @@ class TimeRange implements \Iterator
         }
 
         if ($this->start > $this->end) {
-            // 'Invalid TimeRange. The starting time must be before the ending time.
-            return false;
+            throw new \InvalidArgumentException(
+                'Invalid TimeRange. The starting time must be before the ending time.'
+            );
         }
         return true;
     }
 
     /**
      * Change end datetime. Returns true if successful.
+     * @param mixed $end DateTime object or datetime string
+     * @return bool
      */
     public function setEnd($end)
     {
@@ -118,8 +119,9 @@ class TimeRange implements \Iterator
         }
 
         if ($this->start > $this->end) {
-            // Invalid TimeRange. The starting time must be before the ending time.
-            return false;
+            throw new \InvalidArgumentException(
+                'Invalid TimeRange. The starting time must be before the ending time.'
+            );
         }
         return true;
     }
@@ -183,7 +185,7 @@ class TimeRange implements \Iterator
      * Get array of minutes.
      * @param int $interval 
      * @param FORWARD/BACKWARD $direction 
-     * @return DateTime array
+     * @return array DateTime objects array
      */
     public function getMinutes($interval = 1, $direction = self::FORWARD)
     {
@@ -218,7 +220,7 @@ class TimeRange implements \Iterator
      * Get array of hours in the range.
      * @param int $interval 
      * @param FORWARD/BACKWARD $direction 
-     * @return DateTime array
+     * @return array DateTime objects array
      */
     public function getHours($interval = 1, $direction = self::FORWARD)
     {
@@ -253,7 +255,7 @@ class TimeRange implements \Iterator
      * Get array of days in the range.
      * @param int $interval 
      * @param FORWARD/BACKWARD $direction 
-     * @return DateTime array
+     * @return array DateTime objects array
      */
     public function getDays($interval = 1, $direction = self::FORWARD)
     {
@@ -286,9 +288,9 @@ class TimeRange implements \Iterator
 
     /**
      * Get array of months in the range.
-     * @param type $interval 
-     * @param type $direction 
-     * @return type
+     * @param int $interval 
+     * @param FORWARD/BACKWARD $direction 
+     * @return array DateTime objects array
      */
     public function getMonths($interval = 1, $direction = self::FORWARD)
     {
