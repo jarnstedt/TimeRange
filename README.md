@@ -5,6 +5,18 @@ Compare and loop time ranges in PHP.
 
 Requires PHP 5.3+.
 
+## Install
+
+For manual install copy timerange.php to your project.
+
+To install with Composer update composer.json with:
+```json
+{
+    "require": {
+        "ikirouta/timerange": "dev-master"
+    }
+}
+```
 ## Examples
 
 ### Creating a TimeRange object
