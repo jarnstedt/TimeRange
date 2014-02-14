@@ -22,8 +22,8 @@
         "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
-        "files": {
+        "files": [
             "timerange.php"
-        }
+        ]
     }
 }
