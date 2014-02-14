@@ -1,5 +1,5 @@
 {
-    "name": "ikirouta/TimeRange",
+    "name": "ikirouta/timerange",
     "type": "library",
     "description": "Compare and loop time ranges in PHP.",
     "keywords": ["datetime","time", "date", "range", "period", "compare"],
