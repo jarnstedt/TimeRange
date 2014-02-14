@@ -10,7 +10,8 @@ use \Exception;
  *
  * @package TimeRange
  * @author  Joonas Järnstedt <joonas@xnetti.net>
- * @version Release: 0.4
+ * @author  Juhani Viitanen <juhku@juhku.net>
+ * @version Release: 0.5
  *
  */
 class TimeRange implements \Iterator
@@ -126,6 +127,46 @@ class TimeRange implements \Iterator
             }
 
         } catch (Exception $e) {
+            throw new InvalidArgumentException('Invalid DateTime.');
+        }
+
+        if ($this->start > $this->end) {
+            throw new InvalidArgumentException(
+                'TimeRange: The starting time must be before the ending time.'
+            );
+        }
+        return true;
+    }
+
+    /**
+     * Change start and end time.
+     * 
+     * @param mixed $start DateTime object or datetime string
+     * @param mixed $end   DateTime object or datetime string
+     *
+     * @return bool
+     */
+    public function setRange($start, $end)
+    {
+        if (!is_object($start)) {
+            // Create datetime from string
+            $start = new Datetime($start);
+        }
+
+        if ($start instanceof DateTime) {
+            $this->start = clone $start;
+        } else {
+            throw new InvalidArgumentException('Invalid DateTime.');
+        }
+
+        if (!is_object($end)) {
+            // Create datetime from string
+            $end = new Datetime($end);
+        }
+
+        if ($end instanceof DateTime) {
+            $this->end = clone $end;
+        } else {
             throw new InvalidArgumentException('Invalid DateTime.');
         }
 
