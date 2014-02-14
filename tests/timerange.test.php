@@ -378,4 +378,64 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
         $timerange = new TimeRange('2013-01-01 00:00:00', $end);
         $this->assertEquals($timerange->getEnd(), $end);
     }
+
+    /**
+     * Test changing timerange using datetime objects.
+     */
+    public function testSetRangeDateTime()
+    {
+        $start = new DateTime('2014-01-01 12:30:59');
+        $end = new DateTime('2014-01-02 14:30:59');
+        $timerange = new TimeRange('2013-09-01 12:30:59', '2013-10-02 14:30:59');
+        
+        $timerange->setRange($start, $end);
+
+        $this->assertEquals($start, $timerange->getStart());
+        $this->assertEquals($end, $timerange->getEnd());
+    }
+
+    /**
+     * Test changing timerange using strings.
+     */
+    public function testSetRangeString()
+    {
+        $start = '2014-01-01 12:30:59';
+        $end = '2014-01-02 14:30:59';
+        $timerange = new TimeRange('2013-09-01 12:30:59', '2013-10-02 14:30:59');
+        
+        $timerange->setRange($start, $end);
+
+        $this->assertEquals($start, $timerange->getStart()->format('Y-m-d H:i:s'));
+        $this->assertEquals($end, $timerange->getEnd()->format('Y-m-d H:i:s'));
+    }
+
+    /**
+     * Test setting timerange with invalid values.
+     * @expectedException InvalidArgumentException
+     */
+    public function testSetRangeInvalid()
+    {
+        $start = '2014-01-01 14:31:00';
+        $end = '2014-01-01 14:30:59';
+        $timerange = new TimeRange('2013-09-01 12:30:59', '2013-10-02 14:30:59');
+        
+        $timerange->setRange($start, $end);
+
+        $this->fail('Should throw exception');
+    }
+
+    /**
+     * Test setting timerange with invalid values.
+     * @expectedException Exception
+     */
+    public function testSetRangeInvalidString()
+    {
+        $start = 'abc';
+        $end = '2014-01-01 14:30:59';
+        $timerange = new TimeRange('2013-09-01 12:30:59', '2013-10-02 14:30:59');
+        
+        $timerange->setRange($start, $end);
+
+        $this->fail('Should throw exception');
+    }
 }
