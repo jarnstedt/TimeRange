@@ -1,4 +1,4 @@
-TimeRange <a href="https://travis-ci.org/ikirouta/TimeRange" target="_blank"><img src="https://travis-ci.org/ikirouta/TimeRange.png" /></a>
+TimeRange <a href="https://travis-ci.org/jarnstedt/TimeRange" target="_blank"><img src="https://travis-ci.org/jarnstedt/TimeRange.png" /></a>
 =========
 
 Compare and loop time ranges in PHP.
@@ -13,7 +13,7 @@ To install with Composer update composer.json with:
 ```json
 {
     "require": {
-        "ikirouta/timerange": "dev-master"
+        "jarnstedt/timerange": "dev-master"
     }
 }
 ```
@@ -21,7 +21,7 @@ To install with Composer update composer.json with:
 
 ### Creating a TimeRange object
 ```php
-use \Ikirouta\TimeRange;
+use \jarnstedt\TimeRange;
 
 // Create a new TimeRange
 $timeRange1 = new TimeRange('2013-03-31 00:00:00', '2013-04-01 01:09:00');
@@ -33,7 +33,7 @@ $timeRange2 = new TimeRange($start, $end);
 ```
 
 ### Looping TimeRange
-TimeRange 0.1 supports looping minutes, hours, days and months.
+TimeRange supports looping minutes, hours, days and months.
 ```php
 // Echo all days in time range
 foreach ($timeRange1->getDays() as $datetime) {
