@@ -19,7 +19,7 @@ class TestBenchmark extends \PHPUnit_Framework_TestCase
 
         $overlap_found = false;
         foreach ($timerange->getDays(1, TimeRange::FORWARD) as $date) {
-            if ($timerange->overlaps($timerange2)) {
+            if ($timerange2->overlaps($date)) {
                 $overlap_found = true;
             }
         }
