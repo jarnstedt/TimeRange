@@ -18,7 +18,8 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
      */
     public function testCreateNull()
     {
-        $timerange = new TimeRange('2000-01-01', null);
+        new TimeRange('2000-01-01', null);
+        $this->fail('Should throw exception');
     }
 
     /**
@@ -38,6 +39,8 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
         $timeRange3 = new TimeRange($start3, $end3);
 
         $this->assertInstanceOf('Timerange\TimeRange', $timeRange1);
+        $this->assertInstanceOf('Timerange\TimeRange', $timeRange2);
+        $this->assertInstanceOf('Timerange\TimeRange', $timeRange3);
     }
 
     /**
@@ -49,6 +52,8 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
         $timeRange2 = new TimeRange('1900-01-01', '2020-01-01');
         $timeRange3 = new TimeRange('2013-03-20 01:02:30', '2013-12-31 23:59:59');
         $this->assertInstanceOf('Timerange\TimeRange', $timeRange1);
+        $this->assertInstanceOf('Timerange\TimeRange', $timeRange2);
+        $this->assertInstanceOf('Timerange\TimeRange', $timeRange3);
     }
 
     /**
@@ -62,8 +67,8 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
         $end = new DateTime('2000-01-01 23:59:59');
 
         // End time before start exceptions
-        $timerange = new TimeRange($end, $start);
-
+        new TimeRange($end, $start);
+        $this->fail('Should throw exception');
     }
 
     /**
@@ -75,7 +80,8 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
     {
         $start = new DateTime('2013-01-01 12:30');
         $end = new DateTime('2013-01-01 14:00');
-        $timerange = new TimeRange($end, $start);
+        new TimeRange($end, $start);
+        $this->fail('Should throw exception');
     }
 
     /**
@@ -87,7 +93,8 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
     {
         $start = new DateTime('2013-12-01');
         $end = new DateTime('2013-12-02');
-        $timerange = new TimeRange($end, $start);
+        new TimeRange($end, $start);
+        $this->fail('Should throw exception');
     }
 
     /**
@@ -98,7 +105,8 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
     public function testInvalidCreateFromString1()
     {
         // End time before start exceptions
-        $timerange = new TimeRange('2013-01-01 00:00:01', '2013-01-01 00:00:00');
+        new TimeRange('2013-01-01 00:00:01', '2013-01-01 00:00:00');
+        $this->fail('Should throw exception');
     }
 
     /**
@@ -310,6 +318,7 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
     {
         $timerange = new TimeRange('2013-01-01 00:00:00', '2013-01-01 23:30:30');
         $timerange->overlaps('your argument is invalid');
+        $this->fail('Should throw exception');
     }
 
     /**
@@ -324,6 +333,31 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
         $this->assertTrue($timerange->setStart('2013-01-01 12:00:00'));
         // Should throw an exception
         $timerange->setStart('2013-01-01 23:59:59');
+        $this->fail('Should throw exception');
+    }
+
+    /**
+     * Test setting invalid start date.
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testSetInvalidStart()
+    {
+        $timerange = new TimeRange('2013-01-01 00:00:00', '2013-01-01 23:30:30');
+        $timerange->setStart('foobar');
+        $this->fail('Should throw exception');
+    }
+
+    /**
+     * Test setting invalid start date object.
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testSettingInvalidStartObject()
+    {
+        $timerange = new TimeRange('2013-01-01 00:00:00', '2013-01-01 23:30:30');
+        $timerange->setStart($timerange);
+        $this->fail('Should throw exception');
     }
 
     /**
@@ -338,6 +372,31 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
         $this->assertTrue($timerange->setEnd('2013-01-01 23:00:00'));
         // Should throw an exception
         $timerange->setEnd('2012-12-31 23:59:59');
+        $this->fail('Should throw exception');
+    }
+
+    /**
+     * Test setting invalid end date.
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testSetInvalidEnd()
+    {
+        $timerange = new TimeRange('2013-01-01 00:00:00', '2013-01-01 23:30:30');
+        $timerange->setEnd('foobar');
+        $this->fail('Should throw exception');
+    }
+
+    /**
+     * Test setting invalid end date object.
+     * 
+     * @expectedException InvalidArgumentException
+     */
+    public function testSettingInvalidEndObject()
+    {
+        $timerange = new TimeRange('2013-01-01 00:00:00', '2013-01-01 23:30:30');
+        $timerange->setEnd($timerange);
+        $this->fail('Should throw exception');
     }
 
     /**
@@ -418,7 +477,6 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
         $timerange = new TimeRange('2013-09-01 12:30:59', '2013-10-02 14:30:59');
         
         $timerange->setRange($start, $end);
-
         $this->fail('Should throw exception');
     }
 
@@ -433,7 +491,34 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
         $timerange = new TimeRange('2013-09-01 12:30:59', '2013-10-02 14:30:59');
         
         $timerange->setRange($start, $end);
+        $this->fail('Should throw exception');
+    }
 
+    /**
+     * Test setting timerange with invalid start object.
+     * @expectedException Exception
+     */
+    public function testSetRangeInvalidStartObject()
+    {
+        $timerange = new TimeRange('2013-09-01 12:30:59', '2013-10-02 14:30:59');
+        $start = $timerange;
+        $end = '2014-01-01 14:30:59';
+        
+        $timerange->setRange($start, $end);
+        $this->fail('Should throw exception');
+    }
+
+    /**
+     * Test setting timerange with invalid end object.
+     * @expectedException Exception
+     */
+    public function testSetRangeInvalidEndObject()
+    {
+        $timerange = new TimeRange('2013-09-01 12:30:59', '2013-10-02 14:30:59');
+        $start = '2014-01-01 14:30:59';
+        $end = $timerange;
+        
+        $timerange->setRange($start, $end);
         $this->fail('Should throw exception');
     }
 }
