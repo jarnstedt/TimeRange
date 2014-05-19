@@ -1,9 +1,9 @@
 {
-    "name": "ikirouta/timerange",
+    "name": "jarnstedt/timerange",
     "type": "library",
     "description": "Compare and loop time ranges in PHP.",
     "keywords": ["datetime","time", "date", "range", "period", "compare"],
-    "homepage": "https://github.com/ikirouta/TimeRange",
+    "homepage": "https://github.com/jarnstedt/TimeRange",
     "license": "MIT",
     "authors": [
         {

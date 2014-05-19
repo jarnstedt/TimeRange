@@ -1,7 +1,5 @@
-<?php
-namespace Ikirouta;
+<?php namespace TimeRange;
 
-use \Ikirouta\TimeRange;
 use \DateTime;
 
 /**
@@ -39,7 +37,7 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
         $timeRange2 = new TimeRange($start2, $end2);
         $timeRange3 = new TimeRange($start3, $end3);
 
-        $this->assertInstanceOf('Ikirouta\TimeRange', $timeRange1);
+        $this->assertInstanceOf('Timerange\TimeRange', $timeRange1);
     }
 
     /**
@@ -50,7 +48,7 @@ class TestTimeRange extends \PHPUnit_Framework_TestCase
         $timeRange1 = new TimeRange('2013-01-01', '2013-01-01');
         $timeRange2 = new TimeRange('1900-01-01', '2020-01-01');
         $timeRange3 = new TimeRange('2013-03-20 01:02:30', '2013-12-31 23:59:59');
-        $this->assertInstanceOf('Ikirouta\TimeRange', $timeRange1);
+        $this->assertInstanceOf('Timerange\TimeRange', $timeRange1);
     }
 
     /**

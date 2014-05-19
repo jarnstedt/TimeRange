@@ -1,5 +1,4 @@
-<?php
-namespace Ikirouta;
+<?php namespace TimeRange;
 
 /**
  * Runs benchmarks for TimeRange class.

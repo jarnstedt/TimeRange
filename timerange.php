@@ -1,5 +1,4 @@
-<?php
-namespace Ikirouta;
+<?php namespace TimeRange;
 
 use \InvalidArgumentException;
 use \DateTime;
@@ -11,7 +10,7 @@ use \Exception;
  * @package TimeRange
  * @author  Joonas Järnstedt <joonas@xnetti.net>
  * @author  Juhani Viitanen <juhku@juhku.net>
- * @version Release: 0.5
+ * @version Release: 0.51
  *
  */
 class TimeRange implements \Iterator
