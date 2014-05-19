@@ -21,7 +21,7 @@ To install with Composer update composer.json with:
 
 ### Creating a TimeRange object
 ```php
-use \jarnstedt\TimeRange;
+use TimeRange;
 
 // Create a new TimeRange
 $timeRange1 = new TimeRange('2013-03-31 00:00:00', '2013-04-01 01:09:00');
