@@ -1,6 +1,8 @@
 <?php namespace TimeRange;
 
-use \DateTime;
+use DateTime;
+use InvalidArgumentException;
+use PHPUnit_Framework_TestCase;
 
 /**
  * Tests for TimeRange class.
@@ -8,7 +10,7 @@ use \DateTime;
  * @package TimeRange
  * @author  Joonas Järnstedt <joonas@xnetti.net>
  */
-class TestTimeRange extends \PHPUnit_Framework_TestCase
+class TestTimeRange extends PHPUnit_Framework_TestCase
 {
 
     /**

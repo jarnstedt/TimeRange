@@ -1,8 +1,8 @@
 <?php namespace TimeRange;
 
-use \InvalidArgumentException;
-use \DateTime;
-use \Exception;
+use InvalidArgumentException;
+use DateTime;
+use Exception;
 
 /**
  * Compare and loop time ranges.
@@ -10,12 +10,10 @@ use \Exception;
  * @package TimeRange
  * @author  Joonas Järnstedt <joonas@xnetti.net>
  * @author  Juhani Viitanen <juhku@juhku.net>
- * @version Release: 0.51
  *
  */
 class TimeRange implements \Iterator
 {
-    
     protected $start;
     protected $end;
 
@@ -35,9 +33,10 @@ class TimeRange implements \Iterator
 
     /**
      * Create TimeRange from DateTime objects or time strings.
-     * 
+     *
      * @param mixed $start DateTime object or datetime string
-     * @param mixed $end   DateTime object or datetime string
+     * @param mixed $end DateTime object or datetime string
+     * @throws InvalidArgumentException
      */
     public function __construct($start, $end)
     {
@@ -73,9 +72,10 @@ class TimeRange implements \Iterator
 
     /**
      * Change start datetime. Returns true if successful.
-     * 
+     *
      * @param mixed $start DateTime object or datetime string
-     * 
+     *
+     * @throws InvalidArgumentException
      * @return bool
      */
     public function setStart($start)
@@ -106,9 +106,10 @@ class TimeRange implements \Iterator
 
     /**
      * Change end datetime. Returns true if successful.
-     * 
+     *
      * @param mixed $end DateTime object or datetime string
-     * 
+     *
+     * @throws InvalidArgumentException
      * @return bool
      */
     public function setEnd($end)
@@ -139,10 +140,11 @@ class TimeRange implements \Iterator
 
     /**
      * Change start and end time.
-     * 
-     * @param mixed $start DateTime object or datetime string
-     * @param mixed $end   DateTime object or datetime string
      *
+     * @param mixed $start DateTime object or datetime string
+     * @param mixed $end DateTime object or datetime string
+     *
+     * @throws InvalidArgumentException
      * @return bool
      */
     public function setRange($start, $end)
@@ -179,15 +181,15 @@ class TimeRange implements \Iterator
 
     /**
      * Returns true if the two given time ranges overlap.
-     * 
+     *
      * @param TimeRange|string $timeRange as object or string
-     * @param int              $precision SECOND/MINUTE/HOUR/DAY/MONTH/YEAR
-     * 
+     * @param int $precision SECOND/MINUTE/HOUR/DAY/MONTH/YEAR
+     *
+     * @throws InvalidArgumentException
      * @return bool
      */
     public function overlaps($timeRange, $precision = null)
     {
-
         switch ($precision) {
             case self::YEAR:
                 $format = 'Y';
@@ -239,15 +241,14 @@ class TimeRange implements \Iterator
 
     /**
      * Get array of minutes.
-     * 
-     * @param int $interval  Loop interval in minutes
-     * @param 0|1 $direction FORWARD/BACKWARD
-     * 
+     *
+     * @param int $interval Loop interval in minutes
+     * @param int $direction FORWARD/BACKWARD
+     *
      * @return array DateTime objects array
      */
     public function getMinutes($interval = 1, $direction = self::FORWARD)
     {
-
         $this->dates = array();
 
         if ($direction == self::FORWARD) {
@@ -286,15 +287,14 @@ class TimeRange implements \Iterator
 
     /**
      * Get array of hours in the range.
-     * 
-     * @param int $interval  Loop interval in minutes
-     * @param 0|1 $direction FORWARD/BACKWARD
-     * 
+     *
+     * @param int $interval Loop interval in minutes
+     * @param int $direction FORWARD/BACKWARD
+     *
      * @return array DateTime objects array
      */
     public function getHours($interval = 1, $direction = self::FORWARD)
     {
-
         $this->dates = array();
 
         if ($direction == self::FORWARD) {
@@ -323,15 +323,14 @@ class TimeRange implements \Iterator
 
     /**
      * Get array of days in the range.
-     * 
-     * @param int $interval  Loop interval in days
-     * @param 0|1 $direction FORWARD/BACKWARD
-     * 
+     *
+     * @param int $interval Loop interval in days
+     * @param int $direction FORWARD/BACKWARD
+     *
      * @return array DateTime objects array
      */
     public function getDays($interval = 1, $direction = self::FORWARD)
     {
-
         $this->dates = array();
 
         $int = new \DateInterval("P{$interval}D");
@@ -356,15 +355,14 @@ class TimeRange implements \Iterator
 
     /**
      * Get array of months in the range.
-     * 
-     * @param int $interval  Loop interval in months
-     * @param 0|1 $direction FORWARD/BACKWARD
-     * 
+     *
+     * @param int $interval Loop interval in months
+     * @param int $direction FORWARD/BACKWARD
+     *
      * @return array DateTime objects array
      */
     public function getMonths($interval = 1, $direction = self::FORWARD)
     {
-
         $dates = array();
 
         if ($direction == self::FORWARD) {
@@ -375,7 +373,6 @@ class TimeRange implements \Iterator
             $iterator->setDate($year, $month, 1);
 
             while ($iterator <= $this->end) {
-
                 $dates[] = clone $iterator;
                 $iterator->modify("+$interval month");
             }
@@ -397,7 +394,7 @@ class TimeRange implements \Iterator
     /**
      * Get the start date of timerange.
      * 
-     * @return \DateTime
+     * @return DateTime
      */
     public function getStart()
     {
@@ -407,7 +404,7 @@ class TimeRange implements \Iterator
     /**
      * Get the end date of timerange.
      * 
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEnd()
     {
@@ -428,7 +425,7 @@ class TimeRange implements \Iterator
     /**
      * Iteration function current.
      * 
-     * @return \DateTime
+     * @return DateTime
      */
     public function current()
     {
