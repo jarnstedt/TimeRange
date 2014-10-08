@@ -16,12 +16,26 @@ use Iterator;
  */
 class TimeRange implements Iterator
 {
+    /**
+     * @var DateTime
+     */
     protected $start;
+
+    /**
+     * @var DateTime
+     */
     protected $end;
 
-    // Iterator
-    private $position = 0;
-    private $dates = array();
+    /**
+     * @var array
+     */
+    protected $dates = array();
+
+    /**
+     * For iterator
+     * @var int
+     */
+    protected $position = 0;
 
     const SECOND = 0;
     const MINUTE = 1;
@@ -49,7 +63,6 @@ class TimeRange implements Iterator
      * Change start datetime. Returns true if successful.
      *
      * @param mixed $start DateTime object or datetime string
-     *
      * @throws InvalidArgumentException
      */
     public function setStart($start)
@@ -81,7 +94,6 @@ class TimeRange implements Iterator
      * Change end datetime. Returns true if successful.
      *
      * @param mixed $end DateTime object or datetime string
-     *
      * @throws InvalidArgumentException
      */
     public function setEnd($end)
@@ -114,7 +126,6 @@ class TimeRange implements Iterator
      *
      * @param mixed $start DateTime object or datetime string
      * @param mixed $end DateTime object or datetime string
-     *
      * @throws InvalidArgumentException
      */
     public function setRange($start, $end)
@@ -157,7 +168,6 @@ class TimeRange implements Iterator
      *
      * @param TimeRange|string $timeRange as object or string
      * @param int $precision SECOND/MINUTE/HOUR/DAY/MONTH/YEAR
-     *
      * @throws InvalidArgumentException
      * @return bool
      */
@@ -217,17 +227,16 @@ class TimeRange implements Iterator
      *
      * @param int $interval Loop interval in minutes
      * @param int $direction FORWARD/BACKWARD
-     *
      * @return array DateTime objects array
      */
     public function getMinutes($interval = 1, $direction = self::FORWARD)
     {
-        $this->dates = array();
         $iterator = clone $this->start;
         $hours = $this->start->format('H');
         $minutes = $this->start->format('i');
         $iterator->setTime($hours, $minutes, 0);
 
+        $this->dates = array();
         while ($iterator <= $this->end) {
             $this->dates[] = clone $iterator;
             $iterator->modify("+$interval minute");
@@ -244,15 +253,14 @@ class TimeRange implements Iterator
      *
      * @param int $interval Loop interval in minutes
      * @param int $direction FORWARD/BACKWARD
-     *
      * @return array DateTime objects array
      */
     public function getHours($interval = 1, $direction = self::FORWARD)
     {
-        $this->dates = array();
         $iterator = clone $this->start;
         $iterator->setTime($this->start->format('H'), 0, 0);
 
+        $this->dates = array();
         while ($iterator <= $this->end) {
             $this->dates[] = clone $iterator;
             $iterator->modify("+$interval hour");
@@ -269,13 +277,10 @@ class TimeRange implements Iterator
      *
      * @param int $interval Loop interval in days
      * @param int $direction FORWARD/BACKWARD
-     *
      * @return array DateTime objects array
      */
     public function getDays($interval = 1, $direction = self::FORWARD)
     {
-        $this->dates = array();
-
         $int = new DateInterval("P{$interval}D");
 
         $start = clone $this->start;
@@ -285,6 +290,7 @@ class TimeRange implements Iterator
         $end->setTime(12, 0, 0);
         $daterange = new DatePeriod($start, $int, $end);
 
+        $this->dates = array();
         foreach ($daterange as $date) {
             $this->dates[] = $date;
         }
@@ -301,28 +307,27 @@ class TimeRange implements Iterator
      *
      * @param int $interval Loop interval in months
      * @param int $direction FORWARD/BACKWARD
-     *
      * @return array DateTime objects array
      */
     public function getMonths($interval = 1, $direction = self::FORWARD)
     {
-        $dates = array();
         $iterator = clone $this->start;
         $iterator->setTime(0, 0, 0);
         $year = $this->start->format('Y');
         $month = $this->start->format('m');
         $iterator->setDate($year, $month, 1);
 
+        $this->dates = array();
         while ($iterator <= $this->end) {
-            $dates[] = clone $iterator;
+            $this->dates[] = clone $iterator;
             $iterator->modify("+$interval month");
         }
 
         if ($direction == self::BACKWARD) {
-            return array_reverse($dates);
+            return array_reverse($this->dates);
         }
 
-        return $dates;
+        return $this->dates;
     }
 
     /**
