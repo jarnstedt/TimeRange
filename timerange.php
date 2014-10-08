@@ -13,7 +13,6 @@ use Iterator;
  * @package TimeRange
  * @author  Joonas Järnstedt <joonas@xnetti.net>
  * @author  Juhani Viitanen <juhku@juhku.net>
- *
  */
 class TimeRange implements Iterator
 {
@@ -43,34 +42,7 @@ class TimeRange implements Iterator
      */
     public function __construct($start, $end)
     {
-        try {
-
-            if ($start === null or $end === null) {
-                throw new InvalidArgumentException('Invalid DateTime.');
-            }
-
-            if (!$start instanceof DateTime) {
-                // Create datetime from string
-                $start = new Datetime($start);
-            }
-
-            if (!$end instanceof DateTime) {
-                // Create datetime from string
-                $end = new Datetime($end);
-            }
-
-            $this->start = clone $start;
-            $this->end = clone $end;
-
-        } catch (Exception $e) {
-            throw new InvalidArgumentException('Invalid DateTime: ' . $e);
-        }
-
-        if ($this->start > $this->end) {
-            throw new InvalidArgumentException(
-                'TimeRange: The starting time must be before the ending time.'
-            );
-        }
+        $this->setRange($start, $end);
     }
 
     /**
@@ -79,14 +51,13 @@ class TimeRange implements Iterator
      * @param mixed $start DateTime object or datetime string
      *
      * @throws InvalidArgumentException
-     * @return bool
      */
     public function setStart($start)
     {
         try {
             if (!is_object($start)) {
                 // Create datetime from string
-                $start = new Datetime($start);
+                $start = new DateTime($start);
             }
 
             if ($start instanceof DateTime) {
@@ -104,7 +75,6 @@ class TimeRange implements Iterator
                 'TimeRange: The starting time must be before the ending time.'
             );
         }
-        return true;
     }
 
     /**
@@ -113,14 +83,13 @@ class TimeRange implements Iterator
      * @param mixed $end DateTime object or datetime string
      *
      * @throws InvalidArgumentException
-     * @return bool
      */
     public function setEnd($end)
     {
         try {
             if (!is_object($end)) {
                 // Create datetime from string
-                $end = new Datetime($end);
+                $end = new DateTime($end);
             }
 
             if ($end instanceof DateTime) {
@@ -138,7 +107,6 @@ class TimeRange implements Iterator
                 'TimeRange: The starting time must be before the ending time.'
             );
         }
-        return true;
     }
 
     /**
@@ -148,13 +116,16 @@ class TimeRange implements Iterator
      * @param mixed $end DateTime object or datetime string
      *
      * @throws InvalidArgumentException
-     * @return bool
      */
     public function setRange($start, $end)
     {
+        if (is_null($start) || is_null($end)) {
+            throw new InvalidArgumentException('Invalid DateTime.');
+        }
+
         if (!is_object($start)) {
             // Create datetime from string
-            $start = new Datetime($start);
+            $start = new DateTime($start);
         }
 
         if ($start instanceof DateTime) {
@@ -165,7 +136,7 @@ class TimeRange implements Iterator
 
         if (!is_object($end)) {
             // Create datetime from string
-            $end = new Datetime($end);
+            $end = new DateTime($end);
         }
 
         if ($end instanceof DateTime) {
@@ -179,7 +150,6 @@ class TimeRange implements Iterator
                 'TimeRange: The starting time must be before the ending time.'
             );
         }
-        return true;
     }
 
     /**
@@ -219,7 +189,7 @@ class TimeRange implements Iterator
                 $startStr = $this->start->format($format);
                 $endStr = $this->end->format($format);
 
-                if ($startStr <= $timeRange->end->format($format) and
+                if ($startStr <= $timeRange->end->format($format) &&
                     $timeRange->start->format($format) <= $endStr) {
                     return true;
                 }
@@ -230,7 +200,7 @@ class TimeRange implements Iterator
                 $date = new DateTime($timeRange);
             }
 
-            if ($this->start->format($format) <= $date->format($format) and
+            if ($this->start->format($format) <= $date->format($format) &&
                 $this->end->format($format) >= $date->format($format)) {
                 return true;
             } else {
