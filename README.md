@@ -1,6 +1,4 @@
-TimeRange <a href="https://travis-ci.org/jarnstedt/TimeRange" target="_blank"><img src="https://travis-ci.org/jarnstedt/TimeRange.png" /></a> 
-<a href='https://coveralls.io/r/jarnstedt/TimeRange'><img src='https://coveralls.io/repos/jarnstedt/TimeRange/badge.png' alt='Coverage Status' /></a>
-
+TimeRange <a href="https://travis-ci.org/jarnstedt/TimeRange" target="_blank"><img src="https://travis-ci.org/jarnstedt/TimeRange.png" /></a>
 =========
 
 Compare and loop time ranges in PHP.
