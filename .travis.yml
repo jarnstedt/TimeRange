@@ -2,30 +2,12 @@
 language: php
 
 php:
-  # aliased to a recent 5.3.x version
   - 5.3
-  # aliased to a recent 5.4.x version
   - 5.4
-  # aliased to a recent 5.5.x version
   - 5.5
   - hhvm
 
-# matrix:
-#   allow_failures:
-#     - php: 5.4
-#       env:
-#         - PHPCS=1
-#   include:
-#     - php: 5.4
-#       env:
-#         - PHPCS=1
-
 before_script:
-  - pear install PHP_CodeSniffer
-  - phpenv rehash
-  # - ./composer.phar install --dev --prefer-source --no-interaction
 
 script:
   - phpunit
-  # - ./vendor/bin/phpmd . text codesize,unusedcode,naming,phpmd.xml
-  - sh -c "if [ '$TRAVIS_PHP_VERSION' = '5.5' ]; then phpcs -l --standard=psr2 --report=full -v . tests; fi"
