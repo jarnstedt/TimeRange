@@ -315,7 +315,9 @@ class TimeRange implements Iterator
     {
         $start = clone $this->start;
         $start->setTime(0, 0, 0);
-        $start->modify('last monday');
+        if ($this->start->format('l') != 'Monday') {
+            $start->modify('last monday');
+        }
         $end = clone $this->end;
         // We use this to get the last day
         $end->setTime(12, 0, 0);

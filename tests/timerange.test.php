@@ -544,6 +544,21 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test getWeeks() starting with a monday
+     */
+    public function testMonday()
+    {
+        $timerange = new TimeRange('2014-12-01', '2014-12-31');
+        $dates = $timerange->getWeeks();
+        $result = array();
+        $expected = array('49', '50', '51', '52', '01');
+        foreach ($dates as $date) {
+            $result[] = $date->format('W');
+        }
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
      * Test getWeeks() with changing year
      */
     public function testWeeksYearChange()
