@@ -303,24 +303,28 @@ class TimeRange implements Iterator
     }
 
     /**
-     * Get an array of weeks from between two dates
+     * Get an array of weeks in the range
      *
-     * @param int $interval
-     * @param int $direction
-     * @return array
+     * @todo Remove hard coded 'last monday'
+     *
+     * @param int $interval Loop interval in weeks
+     * @param int $direction FORWARD/BACKWARD
+     * @return array Datetime objects array
      */
     public function getWeeks($interval = 1, $direction = self::FORWARD)
     {
-        $iterator = clone $this->start;
-        $iterator->setTime(0, 0, 0);
-        $year = $this->start->format('Y');
-        $month = $this->start->format('m');
-        $iterator->setDate($year, $month, 1);
+        $start = clone $this->start;
+        $start->setTime(0, 0, 0);
+        $start->modify('last monday');
+        $end = clone $this->end;
+        // We use this to get the last day
+        $end->setTime(12, 0, 0);
+        $int = new DateInterval("P{$interval}W");
+        $daterange = new DatePeriod($start, $int, $end);
 
         $this->dates = array();
-        while ($iterator <= $this->end) {
-            $this->dates[] = clone $iterator;
-            $iterator->modify("+$interval week");
+        foreach ($daterange as $date) {
+            $this->dates[] = $date;
         }
 
         if ($direction == self::BACKWARD) {

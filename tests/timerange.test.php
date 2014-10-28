@@ -535,13 +535,41 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
     {
         $timerange = new TimeRange('2014-01-01', '2014-02-01');
         $resultArr = array();
-        $expectedResultArr = array(
-            '01', '02', '03', '04', '05'
-        );
+        $expectedResultArr = array('01', '02', '03', '04', '05');
         $datesArr = $timerange->getWeeks();
         foreach ($datesArr as $date) {
             $resultArr[] = $date->format('W');
         }
         $this->assertEquals($expectedResultArr, $resultArr);
+    }
+
+    /**
+     * Test getWeeks() with changing year
+     */
+    public function testWeeksYearChange()
+    {
+        $timerange = new TimeRange('2014-12-18', '2015-01-26');
+        $dates = $timerange->getWeeks();
+        $result = array();
+        $expected = array('51', '52', '01', '02', '03', '04', '05');
+        foreach ($dates as $date) {
+            $result[] = $date->format('W');
+        }
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * Test getting last weeks of the year
+     */
+    public function testYearEndWeek()
+    {
+        $timerange = new TimeRange('2016-12-18', '2016-12-31');
+        $dates = $timerange->getWeeks();
+        $result = array();
+        $expected = array('50', '51', '52');
+        foreach ($dates as $date) {
+            $result[] = $date->format('W');
+        }
+        $this->assertEquals($expected, $result);
     }
 }
