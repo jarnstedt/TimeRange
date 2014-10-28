@@ -529,24 +529,30 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests week days
+     * Test getWeeks()
      */
     public function testWeeks()
     {
         $timerange = new TimeRange('2014-01-01', '2014-02-01');
-        $resultArr = array();
-        $expectedResultArr = array('01', '02', '03', '04', '05');
-        $datesArr = $timerange->getWeeks();
-        foreach ($datesArr as $date) {
-            $resultArr[] = $date->format('W');
+        $result = array();
+        $expected = array(
+            '2013-12-30 00:00:00 01',
+            '2014-01-06 00:00:00 02',
+            '2014-01-13 00:00:00 03',
+            '2014-01-20 00:00:00 04',
+            '2014-01-27 00:00:00 05'
+        );
+        $dates = $timerange->getWeeks();
+        foreach ($dates as $date) {
+            $result[] = $date->format('Y-m-d H:i:s W');
         }
-        $this->assertEquals($expectedResultArr, $resultArr);
+        $this->assertEquals($expected, $result);
     }
 
     /**
-     * Test getWeeks() starting with a monday
+     * Test getWeeks() starting on Monday
      */
-    public function testMonday()
+    public function testGetWeeksMonday()
     {
         $timerange = new TimeRange('2014-12-01', '2014-12-31');
         $dates = $timerange->getWeeks();

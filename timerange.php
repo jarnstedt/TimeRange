@@ -37,6 +37,12 @@ class TimeRange implements Iterator
      */
     protected $position = 0;
 
+    /**
+     * First day of the ISO-8601 week
+     * @var string
+     */
+    protected $firstDayOfWeek = 'monday';
+
     const SECOND = 0;
     const MINUTE = 1;
     const HOUR = 2;
@@ -281,13 +287,12 @@ class TimeRange implements Iterator
      */
     public function getDays($interval = 1, $direction = self::FORWARD)
     {
-        $int = new DateInterval("P{$interval}D");
-
         $start = clone $this->start;
         $start->setTime(0, 0, 0);
         $end = clone $this->end;
         // We use this to get the last day
         $end->setTime(12, 0, 0);
+        $int = new DateInterval("P{$interval}D");
         $daterange = new DatePeriod($start, $int, $end);
 
         $this->dates = array();
@@ -305,8 +310,6 @@ class TimeRange implements Iterator
     /**
      * Get an array of weeks in the range
      *
-     * @todo Remove hard coded 'last monday'
-     *
      * @param int $interval Loop interval in weeks
      * @param int $direction FORWARD/BACKWARD
      * @return array Datetime objects array
@@ -315,8 +318,8 @@ class TimeRange implements Iterator
     {
         $start = clone $this->start;
         $start->setTime(0, 0, 0);
-        if ($this->start->format('l') != 'Monday') {
-            $start->modify('last monday');
+        if (strtolower($this->start->format('l')) != $this->firstDayOfWeek) {
+            $start->modify("last $this->firstDayOfWeek");
         }
         $end = clone $this->end;
         // We use this to get the last day
