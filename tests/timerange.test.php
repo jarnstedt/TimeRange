@@ -527,4 +527,21 @@ class TestTimeRange extends PHPUnit_Framework_TestCase
         $timerange->setRange($start, $end);
         $this->fail('Should throw exception');
     }
+
+    /**
+     * Tests week days
+     */
+    public function testWeeks()
+    {
+        $timerange = new TimeRange('2014-01-01', '2014-02-01');
+        $resultArr = array();
+        $expectedResultArr = array(
+            '01', '02', '03', '04', '05'
+        );
+        $datesArr = $timerange->getWeeks();
+        foreach ($datesArr as $date) {
+            $resultArr[] = $date->format('W');
+        }
+        $this->assertEquals($expectedResultArr, $resultArr);
+    }
 }
