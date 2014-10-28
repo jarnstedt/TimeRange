@@ -303,6 +303,34 @@ class TimeRange implements Iterator
     }
 
     /**
+     * Get an array of weeks from between two dates
+     *
+     * @param int $interval
+     * @param int $direction
+     * @return array
+     */
+    public function getWeeks($interval = 1, $direction = self::FORWARD)
+    {
+        $iterator = clone $this->start;
+        $iterator->setTime(0, 0, 0);
+        $year = $this->start->format('Y');
+        $month = $this->start->format('m');
+        $iterator->setDate($year, $month, 1);
+
+        $this->dates = array();
+        while ($iterator <= $this->end) {
+            $this->dates[] = clone $iterator;
+            $iterator->modify("+$interval week");
+        }
+
+        if ($direction == self::BACKWARD) {
+            return array_reverse($this->dates);
+        }
+
+        return $this->dates;
+    }
+
+    /**
      * Get array of months in the range.
      *
      * @param int $interval Loop interval in months
