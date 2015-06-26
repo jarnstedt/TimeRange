@@ -3,19 +3,13 @@ TimeRange <a href="https://travis-ci.org/jarnstedt/TimeRange" target="_blank"><i
 
 Compare and loop time ranges in PHP.
 
-Requires PHP 5.3+.
-
 ## Install
 
 For manual install copy timerange.php to your project.
 
-To install with Composer update composer.json with:
-```json
-{
-    "require": {
-        "jarnstedt/timerange": "dev-master"
-    }
-}
+Install with Composer:
+```
+composer.phar require jarnstedt/timerange
 ```
 ## Examples
 
